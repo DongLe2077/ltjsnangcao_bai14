@@ -1,0 +1,9 @@
+{
+  "books": [
+    {
+      "id": "2",
+      "title": "The Lord of the Rings"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
