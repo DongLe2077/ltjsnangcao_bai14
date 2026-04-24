@@ -1,64 +1,20 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
 import './App.css'
-
-const API_URL = 'http://localhost:3001/books'
+import { useBooksContext } from './components/useBooksContext.js'
 
 function App() {
-  const [books, setBooks] = useState([])
-  const [title, setTitle] = useState('')
-  const [editingId, setEditingId] = useState(null)
-  const [editTitle, setEditTitle] = useState('')
-
-  // Fetch all books
-  const fetchBooks = async () => {
-    const res = await axios.get(API_URL)
-    setBooks(res.data)
-  }
-
-  useEffect(() => {
-    let ignore = false
-
-    axios.get(API_URL).then((res) => {
-      if (!ignore) {
-        setBooks(res.data)
-      }
-    })
-
-    return () => {
-      ignore = true
-    }
-  }, [])
-
-  // Create book
-  const createBook = async (e) => {
-    e.preventDefault()
-    if (!title.trim()) return
-    await axios.post(API_URL, { title })
-    setTitle('')
-    fetchBooks()
-  }
-
-  // Delete book by id
-  const deleteBookById = async (id) => {
-    await axios.delete(`${API_URL}/${id}`)
-    fetchBooks()
-  }
-
-  // Start editing
-  const startEdit = (book) => {
-    setEditingId(book.id)
-    setEditTitle(book.title)
-  }
-
-  // Edit book by id
-  const editBookById = async (id) => {
-    if (!editTitle.trim()) return
-    await axios.put(`${API_URL}/${id}`, { title: editTitle })
-    setEditingId(null)
-    setEditTitle('')
-    fetchBooks()
-  }
+  const {
+    books,
+    title,
+    editingId,
+    editTitle,
+    setTitle,
+    setEditingId,
+    setEditTitle,
+    createBook,
+    deleteBookById,
+    startEdit,
+    editBookById,
+  } = useBooksContext()
 
   return (
     <div className="app">
